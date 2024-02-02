@@ -62,7 +62,7 @@ class UrlServiceImpl(private val urlRepository: UrlRepository) : UrlService {
      * @return the unique short URL
      */
 
-    private fun generateBase62Encoded(originalUrl: String): String {
+    fun generateBase62Encoded(originalUrl: String): String {
         val md = MessageDigest.getInstance("MD5")
         val md5HashBytes = md.digest(originalUrl.toByteArray())
         val base64Encoded = Base64.encodeBase64URLSafeString(md5HashBytes)

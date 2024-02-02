@@ -3,6 +3,7 @@ package org.dkp.urlshortener.service
 import org.dkp.urlshortener.entity.UrlEntity
 import org.dkp.urlshortener.repository.UrlRepository
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.springframework.mock.web.MockHttpServletRequest
@@ -47,4 +48,25 @@ class UrlServiceImplTest {
 
         assertEquals(null, response)
     }
+
+    @Test
+    fun `generateBase62Encoded returns unique short URL for valid original URL`() {
+        val originalUrl = "https://example.com"
+
+        val response = urlService.generateBase62Encoded(originalUrl)
+
+        assertEquals(6, response.length)
+    }
+
+    @Test
+    fun `generateBase62Encoded returns different short URLs for different original URLs`() {
+        val originalUrl1 = "https://example.com"
+        val originalUrl2 = "https://github.com"
+
+        val response1 = urlService.generateBase62Encoded(originalUrl1)
+        val response2 = urlService.generateBase62Encoded(originalUrl2)
+
+        assertNotEquals(response1, response2)
+    }
+
 }
