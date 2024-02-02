@@ -18,14 +18,13 @@ class UrlServiceImpl(private val urlRepository: UrlRepository) : UrlService {
      * Shortens the original URL and saves it in the database and returns the shortened URL
      * @param originalUrl the original URL to be shortened
      * @param request the HttpServletRequest object to get the server URL
-     * @return the shortened URL
+     * @return the full shortened URL
      */
     @Cacheable("shortUrlCache", key = "#originalUrl")
     override fun shortenUrl(originalUrl: String, request: HttpServletRequest): String {
         val uniqueShortUrl = generateUniqueShortUrl(originalUrl)
         urlRepository.save(UrlEntity(originalUrl = originalUrl, shortUrl = uniqueShortUrl))
-        val fullUrl = "${buildServerUrl(request)}/$uniqueShortUrl"
-        return fullUrl
+        return "${buildServerUrl(request)}/$uniqueShortUrl"
     }
 
 
